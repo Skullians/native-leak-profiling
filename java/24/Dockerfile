@@ -69,14 +69,13 @@ RUN apt-get update -y && \
     apt-get install -y screen libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
     useradd -d /home/container -m container
 
-# Changes made here:
-# - Added LD_PRELOAD and MALLOC_CONF environment variables to enable jemalloc profiling
 USER container
 ENV USER=container \
     HOME=/home/container
 
 WORKDIR /home/container/
 
+# Changes: Copy compiled libjemalloc.so file to final image.
 COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
 COPY ./../entrypoint.sh /entrypoint.sh
 
