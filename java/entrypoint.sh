@@ -43,8 +43,11 @@ java -version
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 DUMPS_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Ddump=\([^ ]*\).*/\1/p')
 TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Danalyse=\([^ ]*\).*/\1/p')
+JEMALLOC_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=\([^ ]*\).*/\1/p')
 
+if [ "$JEMALLOC_ENABLED" = "true" ]; then
     export LD_PRELOAD="/usr/local/lib/libjemalloc.so"
+fi
 
 # Display the command we're running in the output, and then execute it with the env
 # from the container itself.

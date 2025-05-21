@@ -32,7 +32,7 @@ Chances are, you'll have to do something similar, which may prove difficult - id
 - Data points that link to `je_malloc_default` **without** passibg through `os#malloc` will likely be a native memory leak. These data points do not pass directly through the JVM collector thus cannot be GC'd.
 
 ### Other Notes
-You can also use this docker image for the improved performance of Jemalloc itself - by default, all profiling tools are disabled.
+You can also use this docker image for the improved performance of Jemalloc itself with the `-Djemalloc=true` flag - by default, all profiling tools are disabled.
 
 ## Why?
 I started working on a Jemalloc native memory profiling image once encountered significant native memory leaks on our Velocity proxy.
