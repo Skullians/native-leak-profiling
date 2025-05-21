@@ -65,8 +65,10 @@ LABEL org.opencontainers.image.licenses=MIT
 
 # Changes made here:
 # - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
-RUN microdnf update && \
-    microdnf install -y curl libjemalloc-dev graphviz ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc-locale-source glibc-langpack-en && \
+# We install the EPEL repository to have access to jeprof.
+RUN microdnf install -y epel-release && \
+    microdnf update && \
+    microdnf install -y curl jemalloc-devel graphviz ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc-locale-source glibc-langpack-en && \
     microdnf clean all && \
     adduser --home-dir /home/container container
 
