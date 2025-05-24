@@ -43,9 +43,9 @@ java -version
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 DUMPS_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Ddump=\([^ ]*\).*/\1/p')
 TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Danalyse=\([^ ]*\).*/\1/p')
-JEMALLOC_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=\([^ ]*\).*/\1/p')
+JEMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=false.*/true/p')
 
-if [ "$JEMALLOC_ENABLED" = "true" ]; then
+if [ "$JEMALLOC_ENABLED" = "true" ] && [ -z "$JEMALLOC_DISABLED" ]; then
     export LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 fi
 
