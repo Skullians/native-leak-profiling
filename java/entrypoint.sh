@@ -45,7 +45,7 @@ DUMPS_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Ddump=\([^ ]*\).*/\1/p')
 TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Danalyse=\([^ ]*\).*/\1/p')
 JEMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=false.*/true/p')
 
-if [ "$JEMALLOC_ENABLED" = "true" ] && [ -z "$JEMALLOC_DISABLED" ]; then
+if [ -z "$JEMALLOC_DISABLED" ]; then
     export LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 fi
 
