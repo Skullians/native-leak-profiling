@@ -8,6 +8,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 ## Images
 Eclipse Temurin Java: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 24, 21, 17, 11, 8)
+GraalVM: UNSUPPORTED (WIP)
 
 ## Usage
 
