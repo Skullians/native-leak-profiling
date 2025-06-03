@@ -20,28 +20,12 @@
 # SOFTWARE.
 #
 
-FROM debian:bookworm-slim AS builder
+FROM ghcr.io/graalvm/jdk-community:24-ol8 AS builder
 
 # Install deps for jemalloc building
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        graphviz \
-        which \
-        lsof \
-        curl \
-        ca-certificates \
-        openssl \
-        git \
-        tar \
-        sqlite3 \
-        fontconfig \
-        libfreetype6 \
-        tzdata \
-        iproute2 \
-        libstdc++6 \
-        autoconf && \
-    rm -rf /var/lib/apt/lists/*
+RUN microdnf install -y epel-release && \
+    microdnf update && \
+    microdnf install -y gcc gcc-c++ make git autoconf tar
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
