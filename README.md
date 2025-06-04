@@ -7,7 +7,7 @@ These images use Jemalloc to create small heapdumps and converts them into reada
 You can read more about native memory leaks, how to debug them, and how to read Jeprof GIFs [here](https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md).
 
 ## Images
-Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 24, 21, 17, 11, 8)
+Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 24, 21, 17, 11, 8)\
 Graalvm: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 24, 21, 17, 11)
 
 ## Usage
