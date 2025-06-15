@@ -42,7 +42,7 @@ java -version
 # replacing the values.
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 DUMPS_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Ddump=\([^ ]*\).*/\1/p')
-TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Danalyse=\([^ ]*\).*/\1/p')
+TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-DanalyseTEMP=\([^ ]*\).*/\1/p')
 JEMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=false.*/true/p')
 
 if [ -z "$JEMALLOC_DISABLED" ]; then
