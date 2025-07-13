@@ -55,7 +55,7 @@ RUN git clone https://github.com/jemalloc/jemalloc.git && \
     make dist && \
     make && \
     make install
-    
+
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/17/Dockerfile
 FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-jammy
 
