@@ -2,7 +2,7 @@
 A simple repository where I make random docker images that make native memory leaks more bearable to debug in Java applications.
 
 >[!TIP]
-> I'd also recommend using this in general - it's known to improve performance and, in some cases, slow down or fix memory leaks.
+> I'd also recommend using this image in general (leak or not) - it's known to improve performance and, in some cases, slow down or fix memory leaks.
 
 These docker images are mainly intended for Minecraft servers, for use in Pterodactyl installations.\
 These images use Jemalloc to create small heapdumps and converts them into readable GIFs (via jeprof).
