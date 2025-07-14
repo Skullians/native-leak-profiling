@@ -13,12 +13,12 @@ permissions:
     packages: write
 
 concurrency:
-    group: 'java-${{ github.ref }}'
+    group: 'java-noble-${{ github.ref }}'
     cancel-in-progress: true
 
 jobs:
     push:
-        name: "java_${{ matrix.tag }}"
+        name: "java_${{ matrix.tag }}_noble"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
