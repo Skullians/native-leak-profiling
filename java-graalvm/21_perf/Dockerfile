@@ -20,23 +20,25 @@
 # SOFTWARE.
 #
 
-# Adapted from https://github.com/pterodactyl/yolks/blob/master/java/21/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:21-jdk-noble
+# Adapted from https://github.com/trenutoo/pterodactyl-images/blob/main/java-graalvm/21/Dockerfile
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:21-ol8
 
-LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
-
-LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
-LABEL       org.opencontainers.image.licenses=MIT
+LABEL author="Softwarenoob" maintainer="admin@softwarenoob.com"
+LABEL org.opencontainers.image.source="https://github.com/Software-Noob/pterodactyl-images"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # Changes made here:
-# - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
-RUN apt-get update -y && \
-    apt-get install -y screen libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
-    useradd -d /home/container -m container
+# - Added jemalloc-devel and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
+# We install the EPEL repository to have access to jeprof.
+RUN microdnf install -y epel-release && \
+    microdnf update && \
+    microdnf install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc-locale-source glibc-langpack-en && \
+    microdnf clean all && \
+    adduser --home-dir /home/container container
 
 ## download and chmod jemalloc (improves download times)
-RUN curl -o /usr/local/lib/libjemalloc.so https://ci.terrabytedev.com/job/metamalloc/lastSuccessfulBuild/artifact/lib/libjemalloc.so && \
-    chmod 644 /usr/local/lib/libjemalloc.so
+RUN curl -o /usr/local/lib/libmimalloc.so https://ci.terrabytedev.com/job/mimalloc/lastSuccessfulBuild/artifact/build/libmimalloc.so && \
+    chmod 644 /usr/local/lib/libmimalloc.so
 
 USER container
 ENV USER=container \
@@ -44,6 +46,6 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
-COPY ./../../scripts/jemalloc/entrypoint.sh /entrypoint.sh
+COPY ./../../scripts/mimalloc/entrypoint.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

@@ -25,10 +25,15 @@ jobs:
             matrix:
                 tag:
                     - 24
+                    - 24_perf
                     - 21
+                    - 21_perf
                     - 17
+                    - 17_perf
                     - 11
+                    - 11_perf
                     - 8
+                    - 8_perf
         
         steps:
             - name: Checkout
