@@ -20,6 +20,25 @@
 # SOFTWARE.
 #
 
+FROM ghcr.io/graalvm/jdk-community:24-ol8 AS builder
+
+# Install deps for jemalloc building
+RUN microdnf install -y epel-release && \
+    microdnf update && \
+    microdnf install -y gcc gcc-c++ make git autoconf tar
+
+RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
+
+# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
+# If you look below, we use the --enable-prof flag in the autogen.sh script to enable profiling.
+WORKDIR /opt
+RUN git clone https://github.com/facebook/jemalloc.git && \
+    cd jemalloc && \
+    ./autogen.sh --enable-prof && \
+    make dist && \
+    make && \
+    make install
+
 # Adapted from https://github.com/trenutoo/pterodactyl-images/blob/main/java-graalvm/21/Dockerfile
 FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:21-ol8
 
@@ -36,16 +55,14 @@ RUN microdnf install -y epel-release && \
     microdnf clean all && \
     adduser --home-dir /home/container container
 
-## download and chmod jemalloc (improves download times)
-RUN curl -o /usr/local/lib/libjemalloc.so https://ci.terrabytedev.com/job/metamalloc/lastSuccessfulBuild/artifact/lib/libjemalloc.so && \
-    chmod 644 /usr/local/lib/libjemalloc.so
-
 USER container
 ENV USER=container \
     HOME=/home/container
 
 WORKDIR /home/container/
 
-COPY ./../../scripts/jemalloc/entrypoint.sh /entrypoint.sh
+# Changes: Copy compiled libjemalloc.so file to final image.
+COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
+COPY ./../entrypoint.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]
