@@ -44,6 +44,6 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
-COPY ./../entrypoint.sh /entrypoint.sh
+./../../scripts/jemalloc/entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]
