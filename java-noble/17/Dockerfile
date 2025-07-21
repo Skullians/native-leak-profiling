@@ -20,41 +20,6 @@
 # SOFTWARE.
 #
 
-FROM debian:bookworm-slim AS builder
-
-# Install deps for jemalloc building
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        graphviz \
-        which \
-        lsof \
-        curl \
-        ca-certificates \
-        openssl \
-        git \
-        tar \
-        sqlite3 \
-        fontconfig \
-        libfreetype6 \
-        tzdata \
-        iproute2 \
-        libstdc++6 \
-        autoconf && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
-
-# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
-# If you look below, we use the --enable-prof flag in the autogen.sh script to enable profiling.
-WORKDIR /opt
-RUN git clone https://github.com/facebook/jemalloc.git && \
-    cd jemalloc && \
-    ./autogen.sh --enable-prof && \
-    make dist && \
-    make && \
-    make install
-
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/17/Dockerfile
 FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-noble
 
@@ -69,14 +34,16 @@ RUN apt-get update -y && \
     apt-get install -y screen libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
     useradd -d /home/container -m container
 
+## download and chmod jemalloc (improves download times)
+RUN curl -o /usr/local/lib/libjemalloc.so https://ci.terrabytedev.com/job/metamalloc/lastSuccessfulBuild/artifact/lib/libjemalloc.so && \
+    chmod 644 /usr/local/lib/libjemalloc.so
+
 USER container
 ENV USER=container \
     HOME=/home/container
 
 WORKDIR /home/container/
 
-# Changes: Copy compiled libjemalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
 COPY ./../entrypoint.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]
