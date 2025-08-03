@@ -46,6 +46,7 @@ TRACE_ENABLED=$(echo "$PARSED" | sed -n 's/.*-Danalyse=\([^ ]*\).*/\1/p')
 JEMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Djemalloc=false.*/true/p')
 
 if [ -z "$JEMALLOC_DISABLED" ]; then
+    printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Enabling jemalloc support"
     export LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 fi
 

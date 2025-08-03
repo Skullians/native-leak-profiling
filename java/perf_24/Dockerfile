@@ -22,11 +22,10 @@
 
 FROM debian:bookworm-slim AS builder
 
-# Install deps for jemalloc building
+# Install deps for mimalloc building
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
-        graphviz \
         which \
         lsof \
         curl \
@@ -40,33 +39,30 @@ RUN apt-get update && \
         tzdata \
         iproute2 \
         libstdc++6 \
+        cmake \
         autoconf && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
-# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
-# If you look below, we use the --enable-prof flag in the autogen.sh script to enable profiling.
+# We manually compile mimalloc here
 WORKDIR /opt
-RUN git clone https://github.com/facebook/jemalloc.git && \
-    cd jemalloc && \
-    ./autogen.sh --enable-prof && \
-    make dist && \
-    make && \
+RUN git clone https://github.com/microsoft/mimalloc && \
+    cd mimalloc && \
+    mkdir -p build && \
+    cd build && \
+    cmake -DMI_BUILD_TESTS=OFF ../ && \
     make install
 
-# Adapted from https://github.com/pterodactyl/yolks/blob/master/java/11/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:11.0.13_8-jdk-focal
+FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:24-jdk
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
 LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
 LABEL       org.opencontainers.image.licenses=MIT
 
-# Changes made here:
-# - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
 RUN apt-get update -y && \
-    apt-get install -y screen libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
+    apt-get install -y screen lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
     useradd -d /home/container -m container
 
 USER container
@@ -75,8 +71,8 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
-# Changes: Copy compiled libjemalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
-COPY scripts/jemalloc.sh /entrypoint.sh
+# Changes: Copy compiled libmimalloc.so file to final image.
+COPY --from=builder /usr/local/lib/libmimalloc.so /usr/local/lib/libmimalloc.so
+COPY scripts/mimalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

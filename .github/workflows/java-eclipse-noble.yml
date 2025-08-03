@@ -25,10 +25,15 @@ jobs:
             matrix:
                 tag:
                     - 24
+                    - perf_24
                     - 21
+                    - perf_21
                     - 17
+                    - perf_17
                     - 11
+                    - perf_11
                     - 8
+                    - perf_8
         
         steps:
             - name: Checkout
@@ -52,7 +57,7 @@ jobs:
             - name: Build and Push
               uses: docker/build-push-action@v6
               with:
-                context: ./java
+                context: .
                 platforms: linux/amd64,linux/arm64
                 file: ./java/${{ matrix.tag }}/Dockerfile
                 push: true

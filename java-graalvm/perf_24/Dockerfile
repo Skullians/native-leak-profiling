@@ -22,21 +22,20 @@
 
 FROM ghcr.io/graalvm/jdk-community:24-ol8 AS builder
 
-# Install deps for jemalloc building
+# Install deps for mimalloc building
 RUN microdnf install -y epel-release && \
     microdnf update && \
-    microdnf install -y gcc gcc-c++ make git autoconf tar
+    microdnf install -y gcc gcc-c++ make git autoconf tar cmake
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
-# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
-# If you look below, we use the --enable-prof flag in the autogen.sh script to enable profiling.
+# We manually compile mimalloc here
 WORKDIR /opt
-RUN git clone https://github.com/facebook/jemalloc.git && \
-    cd jemalloc && \
-    ./autogen.sh --enable-prof && \
-    make dist && \
-    make && \
+RUN git clone https://github.com/microsoft/mimalloc && \
+    cd mimalloc && \
+    mkdir -p build && \
+    cd build && \
+    cmake -DMI_BUILD_TESTS=OFF ../ && \
     make install
 
 FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:24-ol8
@@ -46,12 +45,9 @@ LABEL author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 LABEL org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
 LABEL org.opencontainers.image.licenses=MIT
 
-# Changes made here:
-# - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
-# We install the EPEL repository to have access to jeprof.
 RUN microdnf install -y epel-release && \
     microdnf update && \
-    microdnf install -y curl jemalloc-devel graphviz ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc glibc-locale-source glibc-langpack-en && \
+    microdnf install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc glibc-locale-source glibc-langpack-en && \
     microdnf clean all && \
     adduser --home-dir /home/container container
 
@@ -61,8 +57,8 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
-# Changes: Copy compiled libjemalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
-COPY scripts/jemalloc.sh /entrypoint.sh
+# Changes: Copy compiled libmimalloc.so file to final image.
+COPY --from=builder /usr/local/lib64/libmimalloc.so /usr/local/lib/libmimalloc.so
+COPY scripts/mimalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]
