@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:24-ol8 AS builder
+FROM ghcr.io/graalvm/jdk-community:17-ol9 AS builder
 
 # Install deps for jemalloc building
 RUN microdnf install -y epel-release && \
@@ -40,7 +40,7 @@ RUN git clone https://github.com/facebook/jemalloc.git && \
     make install
 
 # Adapted from https://github.com/trenutoo/pterodactyl-images/blob/main/java-graalvm/17/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:17-ol8
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:17-ol9
 
 LABEL author="Softwarenoob" maintainer="admin@softwarenoob.com"
 LABEL org.opencontainers.image.source="https://github.com/Software-Noob/pterodactyl-images"
