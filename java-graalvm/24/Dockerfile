@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:24-ol8 AS builder
+FROM ghcr.io/graalvm/jdk-community:24-ol9 AS builder
 
 # Install deps for jemalloc building
 RUN microdnf install -y epel-release && \
@@ -39,7 +39,7 @@ RUN git clone https://github.com/facebook/jemalloc.git && \
     make && \
     make install
 
-FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:24-ol8
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:24-ol9
 
 LABEL author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
