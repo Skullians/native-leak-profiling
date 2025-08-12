@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:ol8-java11 AS builder
+FROM ghcr.io/graalvm/jdk:ol8-java11 AS builder
 
 # Install deps for jemalloc building
 RUN microdnf install -y epel-release && \
