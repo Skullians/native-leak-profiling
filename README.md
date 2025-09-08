@@ -50,7 +50,7 @@ You can also use this docker image for the improved performance of Jemalloc itse
 ## Why?
 I started working on a Jemalloc native memory profiling image once encountered significant native memory leaks on our Velocity proxy.
 
-At some points we were hitting 40gb heap usage.
+At some points we were hitting 40gb off-heap usage.
 
 As a result, we had to move out of Pterodactyl + Docker, and run our proxies in SSH temporarily with Jemalloc enabled to profile the leak...
 This is because you must supply jeprof with the java binary used to make the dumps, so people can't SSH in manually and run jeprof there, otherwise you get an output GIF that is a garbled mess.
