@@ -47,6 +47,8 @@ Chances are, you'll have to do something similar, which may prove difficult - id
 ### Other Notes
 You can also use this docker image for the improved performance of Jemalloc itself. Disable with `-Djemalloc=false` flag - by default, all profiling tools are disabled.
 
+For performance images, use `-Dmimalloc=false`.
+
 ## Why?
 I started working on a Jemalloc native memory profiling image once encountered significant native memory leaks on our Velocity proxy.
 
