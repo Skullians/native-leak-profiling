@@ -24,6 +24,8 @@ jobs:
             fail-fast: false
             matrix:
                 tag:
+                    - 25
+                    - perf_25
                     - 24
                     - perf_24
                     - 21
