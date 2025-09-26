@@ -10,8 +10,8 @@ These images use Jemalloc to create small heapdumps and converts them into reada
 You can read more about native memory leaks, how to debug them, and how to read Jeprof GIFs [here](https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md).
 
 ## Images
-* Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 24, 21, 17, 11, 8)
-* Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 24, 21, 17, 11, 8)
+* Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
+* Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
 * GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11)
 
 # Performance Images
@@ -19,8 +19,8 @@ You can read more about native memory leaks, how to debug them, and how to read 
 > These are experimental images.\
 > These use Microsoft's [Mimalloc](https://github.com/microsoft/mimalloc) allocator, an alloactor that outperforms Jemalloc, but does not have its profiling capabilities.
 
-* Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEM` (Supported: 24, 21, 17, 11, 8)
-* Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 24, 21, 17, 11, 8)
+* Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEM` (Supported: 25, 24, 21, 17, 11, 8)
+* Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
 * GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11)
 
 ## Usage
