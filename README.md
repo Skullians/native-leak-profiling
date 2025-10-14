@@ -12,7 +12,8 @@ You can read more about native memory leaks, how to debug them, and how to read 
 ## Images
 * Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
 * Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
-* GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11)
+* GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
+* Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11)
 
 # Performance Images
 >[!WARNING]
@@ -21,7 +22,8 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 * Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEM` (Supported: 25, 24, 21, 17, 11, 8)
 * Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
-* GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11)
+* GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
+* Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11)
 
 ## Usage
 
