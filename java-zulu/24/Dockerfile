@@ -55,7 +55,7 @@ RUN git clone https://github.com/facebook/jemalloc.git && \
     make && \
     make install
 
-FROM --platform=$TARGETOS/$TARGETARCH zulu-openjdk-debian:24-latest
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:24-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

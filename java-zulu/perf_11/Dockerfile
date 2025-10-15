@@ -55,7 +55,7 @@ RUN git clone https://github.com/microsoft/mimalloc && \
     make install
 
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/11/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH zulu-openjdk-debian:11-latest
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:11-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

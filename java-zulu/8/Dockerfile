@@ -56,7 +56,7 @@ RUN git clone https://github.com/facebook/jemalloc.git && \
     make install
 
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/8/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH zulu-openjdk-debian:8-latest
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:8-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

@@ -54,7 +54,7 @@ RUN git clone https://github.com/microsoft/mimalloc && \
     cmake -DMI_BUILD_TESTS=OFF ../ && \
     make install
 
-FROM --platform=$TARGETOS/$TARGETARCH zulu-openjdk-debian:25-latest
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:25-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
