@@ -28,7 +28,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 ## Usage
 
 ### Automatic Jemalloc/Jeprof dumps
-Once you have set the custom docker image, add the `-Ddumps=true` JVM flag, and let the server run and allow Jeprof GIFs to accumulate in `dumps/output`.\
+Once you have set the custom docker image, add the `-Ddump=true` JVM flag, and let the server run and allow Jeprof GIFs to accumulate in `dumps/output`.\
 By default, Jemalloc is configured to make dumps every 2GiB of memory allocation - these dumps will not freeze your server, and they are only 50-200KiB in size.\
 However, the Docker images will automatically remove these and convert them into readable GIFs, each of which are around 200-300KiB. Plan accordingly for increased storage usage if you plan to run it for a long time.\
 You can then analyze these GIFs once created - you will have a lot to go through - (see https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md)
