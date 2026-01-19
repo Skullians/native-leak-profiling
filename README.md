@@ -9,6 +9,9 @@ These images use Jemalloc to create small heapdumps and converts them into reada
 
 You can read more about native memory leaks, how to debug them, and how to read Jeprof GIFs [here](https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md).
 
+>[!NOTE]
+> GraalVM 24 was the last release that contains its experimental JIT optimizations, see [Detaching GraalVM from the Java Ecosystem Train](https://blogs.oracle.com/java/detaching-graalvm-from-the-java-ecosystem-train) for more information.
+
 ## Images
 * Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
 * Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
