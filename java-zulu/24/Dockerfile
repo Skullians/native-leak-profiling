@@ -45,16 +45,13 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
-# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
-# If you look below, we use the --enable-prof flag in the autogen.sh script to enable profiling.
 WORKDIR /opt
-RUN git clone https://github.com/facebook/jemalloc.git && \
-    cd jemalloc && \
-    ./autogen.sh --enable-prof && \
-    make dist && \
-    make && \
-    make install
 
+# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
+# If you look in yhe build script, we use the --enable-prof flag in the autogen.sh script to enable profiling.
+COPY scripts/build/jemalloc.sh /opt/jemalloc.sh
+RUN chmod +x /opt/jemalloc.sh
+RUN /opt/jemalloc.sh
 FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:24-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"

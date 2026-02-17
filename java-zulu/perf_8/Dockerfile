@@ -45,14 +45,11 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
-# We manually compile mimalloc here
 WORKDIR /opt
-RUN git clone https://github.com/microsoft/mimalloc && \
-    cd mimalloc && \
-    mkdir -p build && \
-    cd build && \
-    cmake -DMI_BUILD_TESTS=OFF ../ && \
-    make install
+
+# We manually compile mimalloc here
+COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
+RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
 FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:8-latest
 
