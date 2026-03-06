@@ -10,6 +10,9 @@ These images use Jemalloc to create small heapdumps and converts them into reada
 
 You can read more about native memory leaks, how to debug them, and how to read Jeprof GIFs [here](https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md).
 
+> [!NOTE]
+> GraalVM 24 was the last release that contains its experimental JIT optimizations, see [Detaching GraalVM from the Java Ecosystem Train](https://blogs.oracle.com/java/detaching-graalvm-from-the-java-ecosystem-train) for more information.
+
 ## Images
 
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
@@ -23,10 +26,10 @@ You can read more about native memory leaks, how to debug them, and how to read 
 > These are experimental images.\
 > These use Microsoft's [Mimalloc](https://github.com/microsoft/mimalloc) allocator, an alloactor that outperforms Jemalloc, but does not have its profiling capabilities.
 
-- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEM` (Supported: 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11, 8)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11)
 
 # TCMalloc
 
@@ -38,7 +41,7 @@ These are new images that I added for the hell of it. TCMalloc has shown in benc
 
 ### Automatic Jemalloc/Jeprof dumps
 
-Once you have set the custom docker image, add the `-Ddumps=true` JVM flag, and let the server run and allow Jeprof GIFs to accumulate in `dumps/output`.\
+Once you have set the custom docker image, add the `-Ddump=true` JVM flag, and let the server run and allow Jeprof GIFs to accumulate in `dumps/output`.\
 By default, Jemalloc is configured to make dumps every 2GiB of memory allocation - these dumps will not freeze your server, and they are only 50-200KiB in size.\
 However, the Docker images will automatically remove these and convert them into readable GIFs, each of which are around 200-300KiB. Plan accordingly for increased storage usage if you plan to run it for a long time.\
 You can then analyze these GIFs once created - you will have a lot to go through - (see https://github.com/jeffgriffith/native-jvm-leaks/blob/master/README.md)
