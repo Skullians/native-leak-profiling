@@ -24,6 +24,9 @@ jobs:
             fail-fast: false
             matrix:
                 tag:
+                    - 26
+                    - perf_26
+                    - tcmalloc_26
                     - 25
                     - perf_25
                     - tcmalloc_25
