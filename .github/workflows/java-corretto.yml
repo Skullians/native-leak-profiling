@@ -1,4 +1,4 @@
-name: Build Java (Noble)
+name: Build Java (Corretto)
 
 on:
     workflow_dispatch:
@@ -6,19 +6,19 @@ on:
         branches:
             - main
         paths:
-            - java-noble/**
+            - java-corretto/**
 
 permissions:
     actions: read
     packages: write
 
 concurrency:
-    group: "java-noble-${{ github.ref }}"
+    group: "java-corretto-${{ github.ref }}"
     cancel-in-progress: true
 
 jobs:
     push:
-        name: "java_${{ matrix.tag }}_noble"
+        name: "java_${{ matrix.tag }}_corretto"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
@@ -63,8 +63,8 @@ jobs:
               with:
                   context: .
                   platforms: linux/amd64,linux/arm64
-                  file: ./java-noble/${{ matrix.tag }}/Dockerfile
+                  file: ./java-corretto/${{ matrix.tag }}/Dockerfile
                   push: true
-                  tags: ghcr.io/skullians/native-leak-profiling:java_${{ matrix.tag }}_noble
+                  tags: ghcr.io/skullians/native-leak-profiling:java_${{ matrix.tag }}_corretto
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
