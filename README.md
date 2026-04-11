@@ -15,10 +15,11 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 ## Images
 
-- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
-- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11, 8)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Amazon Corretto (Alpine) `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_corretto` (Supported: 26, 25, 24, 21, 17, 11, 8)
 
 # Performance Images
 
@@ -26,16 +27,17 @@ You can read more about native memory leaks, how to debug them, and how to read 
 > These are experimental images.\
 > These use Microsoft's [Mimalloc](https://github.com/microsoft/mimalloc) allocator, an alloactor that outperforms Jemalloc, but does not have its profiling capabilities.
 
-- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 25, 24, 21, 17, 11, 8)
-- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11)
+- Amazon Corretto (Alpine) `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_corretto` (Supported: 26, 25, 24, 21, 17, 11, 8)
 
 # TCMalloc
 
 These are new images that I added for the hell of it. TCMalloc has shown in benchmarks that it is better than Jemalloc / Mimalloc / the traditional allocators in some applications... but Minecraft sure as hell isn't one of those things (yes, these images are typically used on minecraft-related applications if you're new to this). If you've got some reliable benchmarks, please feel free to PR in the benchmark results!
 
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 25, 24, 21, 17, 11, 8)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
 
 ## Usage
 
