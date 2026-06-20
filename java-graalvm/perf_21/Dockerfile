@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:24-ol9 AS builder
+FROM ghcr.io/graalvm/jdk-community:21.0.2-ol9-20240116 AS builder
 
 # Install deps for mimalloc building
 RUN microdnf install -y epel-release && \
@@ -36,7 +36,7 @@ COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
 RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
 # Adapted from https://github.com/trenutoo/pterodactyl-images/blob/main/java-graalvm/21/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:21-ol9
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:21.0.2-ol9-20240116
 
 LABEL author="Softwarenoob" maintainer="admin@softwarenoob.com"
 LABEL org.opencontainers.image.source="https://github.com/Software-Noob/pterodactyl-images"

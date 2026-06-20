@@ -51,7 +51,7 @@ WORKDIR /opt
 COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
 RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:26-jdk
+FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:26.0.1_8-jdk-resolute
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

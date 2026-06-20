@@ -8,7 +8,7 @@ cd "$BUILD_DIR"
 
 if [ ! -d jemalloc ]; then
     echo "Cloning jemalloc"
-    git clone https://github.com/facebook/jemalloc.git
+    git clone https://github.com/jemalloc/jemalloc.git
 fi
 
 cd jemalloc
