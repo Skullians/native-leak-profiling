@@ -52,7 +52,7 @@ COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
 RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/11/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:11.0.13_8-jdk-focal
+FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:11.0.31_11-jdk-resolute
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

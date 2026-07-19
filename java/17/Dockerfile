@@ -53,7 +53,7 @@ COPY scripts/build/jemalloc.sh /opt/jemalloc.sh
 RUN chmod +x /opt/jemalloc.sh
 RUN /opt/jemalloc.sh
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/17/Dockerfile
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-jammy
+FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17.0.19_10-jdk-resolute
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

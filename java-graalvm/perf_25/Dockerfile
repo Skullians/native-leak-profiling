@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:25-ol9 AS builder
+FROM ghcr.io/graalvm/jdk-community:25.0.2-ol8-20260120 AS builder
 
 # Install deps for mimalloc building
 RUN microdnf install -y epel-release && \
@@ -35,7 +35,7 @@ WORKDIR /opt
 COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
 RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
-FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:25-ol9
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/graalvm/jdk-community:25.0.2-ol8-20260120
 
 LABEL author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 

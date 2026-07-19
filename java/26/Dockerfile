@@ -52,7 +52,7 @@ WORKDIR /opt
 COPY scripts/build/jemalloc.sh /opt/jemalloc.sh
 RUN chmod +x /opt/jemalloc.sh
 RUN /opt/jemalloc.sh
-FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:26-jdk
+FROM --platform=$TARGETOS/$TARGETARCH eclipse-temurin:26.0.1_8-jdk-resolute
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
