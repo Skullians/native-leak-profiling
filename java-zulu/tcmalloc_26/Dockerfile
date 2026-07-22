@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:25-latest
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:26-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
