@@ -60,7 +60,7 @@ LABEL       org.opencontainers.image.licenses=MIT
 
 # Changes made here:
 # - Added jemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
-RUN apk add --no-cache bash shadow screen jemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite fontconfig freetype tzdata iproute2 libstdc++ && \
+RUN apk add --no-cache bash shadow screen procps jemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite fontconfig freetype tzdata iproute2 libstdc++ && \
     useradd -d /home/container -m container
 
 USER container

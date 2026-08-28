@@ -63,7 +63,7 @@ LABEL       org.opencontainers.image.licenses=MIT
 # Changes made here:
 # - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
 RUN apt-get update -y && \
-    apt-get install -y screen libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
+    apt-get install -y screen procps libjemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
     useradd -d /home/container -m container
 
 USER container
