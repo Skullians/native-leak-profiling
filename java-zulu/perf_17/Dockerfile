@@ -60,8 +60,9 @@ LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolk
 LABEL       org.opencontainers.image.licenses=MIT
 
 RUN apt-get update -y && \
-    apt-get install -y screen lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
-    useradd -d /home/container -m container
+    apt-get install -y --no-install-recommends screen lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 && \
+    useradd -d /home/container -m container && \
+    rm -rf /var/lib/apt/lists/*
 
 USER container
 ENV USER=container \
@@ -70,7 +71,7 @@ ENV USER=container \
 WORKDIR /home/container/
 
 # Changes: Copy compiled libmimalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libmimalloc.so /usr/local/lib/libmimalloc.so
+COPY --from=builder /usr/local/lib/libmimalloc.so* /usr/local/lib/
 COPY scripts/mimalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

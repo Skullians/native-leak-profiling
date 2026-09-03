@@ -67,7 +67,7 @@ ENV USER=container \
 WORKDIR /home/container/
 
 # Changes: Copy compiled libmimalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libmimalloc.so /usr/local/lib/libmimalloc.so
+COPY --from=builder /usr/local/lib/libmimalloc.so* /usr/local/lib/
 COPY scripts/mimalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

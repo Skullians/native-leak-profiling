@@ -59,7 +59,7 @@ ENV USER=container \
 WORKDIR /home/container/
 
 # Changes: Copy compiled libjemalloc.so file to final image.
-COPY --from=builder /usr/local/lib/libjemalloc.so /usr/local/lib/libjemalloc.so
+COPY --from=builder /usr/local/lib/libjemalloc.so* /usr/local/lib/
 COPY scripts/jemalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]
