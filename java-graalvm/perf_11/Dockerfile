@@ -44,7 +44,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 
 RUN microdnf install -y epel-release && \
     microdnf update && \
-    microdnf install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc glibc-locale-source glibc-langpack-en && \
+    microdnf install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof numactl glibc glibc-locale-source glibc-langpack-en && \
     microdnf clean all && \
     adduser --home-dir /home/container container
 

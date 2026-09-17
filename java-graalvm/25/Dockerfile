@@ -48,9 +48,12 @@ LABEL org.opencontainers.image.licenses=MIT
 # We install the EPEL repository to have access to jeprof.
 RUN microdnf install -y epel-release && \
     microdnf update && \
-    microdnf install -y procps-ng curl jemalloc-devel graphviz ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof glibc glibc-locale-source glibc-langpack-en && \
+    microdnf install -y procps-ng curl jemalloc-devel graphviz ca-certificates openssl git tar sqlite fontconfig tzdata iproute gcc gcc-c++ freetype libstdc++ lsof numactl glibc glibc-locale-source glibc-langpack-en && \
     microdnf clean all && \
     adduser --home-dir /home/container container
+
+# jeprof is picky
+RUN test -n "$JAVA_HOME" && mkdir -p /opt/java && ln -sfn "$JAVA_HOME" /opt/java/openjdk
 
 USER container
 ENV USER=container \

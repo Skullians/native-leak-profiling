@@ -20,11 +20,12 @@
 # SOFTWARE.
 #
 
-FROM alpine:latest AS builder
+FROM debian:bookworm-slim AS builder
 
 # Install deps for mimalloc building
-RUN apk add --no-cache \
-        build-base \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
         which \
         lsof \
         curl \
@@ -32,15 +33,15 @@ RUN apk add --no-cache \
         openssl \
         git \
         tar \
-        sqlite \
+        sqlite3 \
         fontconfig \
-        freetype \
+        libfreetype6 \
         tzdata \
         iproute2 \
-        libstdc++ \
-        bash \
+        libstdc++6 \
         cmake \
-        autoconf
+        autoconf && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
@@ -50,15 +51,29 @@ WORKDIR /opt
 COPY scripts/build/mimalloc.sh /opt/mimalloc.sh
 RUN chmod +x /opt/mimalloc.sh && /opt/mimalloc.sh
 
-FROM --platform=$TARGETOS/$TARGETARCH amazoncorretto:27-alpine-jdk
+# wanted glibc 2.36, and amazon linux 2023 (which is what regular alpine-jdk images are based on) is STILL 2.34...
+# so i'm basing it off of debian and packaging that perra in
+FROM --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
 LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
 LABEL       org.opencontainers.image.licenses=MIT
 
-RUN apk add --no-cache bash shadow screen lsof curl ca-certificates openssl git tar sqlite fontconfig freetype tzdata iproute2 libstdc++ && \
-    useradd -d /home/container -m container
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends ca-certificates curl && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://apt.corretto.aws/corretto.key -o /etc/apt/keyrings/corretto.asc && \
+    echo "deb [signed-by=/etc/apt/keyrings/corretto.asc] https://apt.corretto.aws stable main" > /etc/apt/sources.list.d/corretto.list && \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends java-27-amazon-corretto-jdk screen lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
+    useradd -d /home/container -m container && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /opt/java && ln -sfn /usr/lib/jvm/java-27-amazon-corretto /opt/java/openjdk
+
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH=/opt/java/openjdk/bin:$PATH
 
 USER container
 ENV USER=container \

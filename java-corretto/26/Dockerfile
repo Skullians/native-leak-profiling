@@ -20,11 +20,12 @@
 # SOFTWARE.
 #
 
-FROM alpine:latest AS builder
+FROM debian:bookworm-slim AS builder
 
 # Install deps for jemalloc building
-RUN apk add --no-cache \
-        build-base \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
         graphviz \
         which \
         lsof \
@@ -33,25 +34,28 @@ RUN apk add --no-cache \
         openssl \
         git \
         tar \
-        sqlite \
+        sqlite3 \
         fontconfig \
-        freetype \
+        libfreetype6 \
         tzdata \
         iproute2 \
-        libstdc++ \
-        bash \
-        autoconf
+        libstdc++6 \
+        autoconf && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
 
 WORKDIR /opt
 
-# We manually compile jemalloc here, as installing through apk (jemalloc-dev) does not enable the profiling options we need in Jemalloc.
+# We manually compile jemalloc here, as installing through apt-get (libjemalloc2) does not enable the profiling options we need in Jemalloc.
 # If you look in yhe build script, we use the --enable-prof flag in the autogen.sh script to enable profiling.
 COPY scripts/build/jemalloc.sh /opt/jemalloc.sh
 RUN chmod +x /opt/jemalloc.sh
 RUN /opt/jemalloc.sh
-FROM --platform=$TARGETOS/$TARGETARCH amazoncorretto:26-alpine-jdk
+
+# wanted glibc 2.36, and amazon linux 2023 (which is what regular alpine-jdk images are based on) is STILL 2.34...
+# so i'm basing it off of debian and packaging that perra in
+FROM --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
@@ -59,9 +63,22 @@ LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolk
 LABEL       org.opencontainers.image.licenses=MIT
 
 # Changes made here:
-# - Added jemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
-RUN apk add --no-cache bash shadow screen procps jemalloc-dev graphviz lsof curl ca-certificates openssl git tar sqlite fontconfig freetype tzdata iproute2 libstdc++ && \
-    useradd -d /home/container -m container
+# - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends ca-certificates curl && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://apt.corretto.aws/corretto.key -o /etc/apt/keyrings/corretto.asc && \
+    echo "deb [signed-by=/etc/apt/keyrings/corretto.asc] https://apt.corretto.aws stable main" > /etc/apt/sources.list.d/corretto.list && \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends java-26-amazon-corretto-jdk screen procps libjemalloc-dev graphviz lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
+    useradd -d /home/container -m container && \
+    rm -rf /var/lib/apt/lists/*
+
+# jeprof is picky
+RUN mkdir -p /opt/java && ln -sfn /usr/lib/jvm/java-26-amazon-corretto /opt/java/openjdk
+
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH=/opt/java/openjdk/bin:$PATH
 
 USER container
 ENV USER=container \

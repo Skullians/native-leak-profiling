@@ -19,7 +19,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
-- Amazon Corretto (Alpine) `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+- Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
 # Performance Images
 
@@ -31,7 +31,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11)
-- Amazon Corretto (Alpine) `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+- Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
 # TCMalloc
 
