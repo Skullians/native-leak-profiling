@@ -15,7 +15,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 ## Images
 
-- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
@@ -27,7 +27,7 @@ You can read more about native memory leaks, how to debug them, and how to read 
 > These are experimental images.\
 > These use Microsoft's [Mimalloc](https://github.com/microsoft/mimalloc) allocator, an alloactor that outperforms Jemalloc, but does not have its profiling capabilities.
 
-- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11)
