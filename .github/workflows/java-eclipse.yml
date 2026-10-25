@@ -7,6 +7,7 @@ on:
             - main
         paths:
             - java/**
+            - scripts/**
 
 permissions:
     actions: read
@@ -53,6 +54,9 @@ jobs:
               with:
                   buildkitd-flags: --debug
 
+            - name: Set image name
+              run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
             - name: Login to registry
               uses: docker/login-action@v4
               with:
@@ -67,6 +71,6 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   file: ./java/${{ matrix.tag }}/Dockerfile
                   push: true
-                  tags: ghcr.io/skullians/native-leak-profiling:java_${{ matrix.tag }}
+                  tags: ${{ env.IMAGE }}:java_${{ matrix.tag }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max

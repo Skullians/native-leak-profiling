@@ -18,8 +18,12 @@ You can read more about native memory leaks, how to debug them, and how to read 
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+
+> [!NOTE]
+> Eclipse Temurin 27 is not published on Ubuntu Noble, so there is no Noble image for 27 - use the regular Eclipse Adoptium image instead.\
+> The Eclipse Adoptium 8 and 11 images now track the latest Java 8 / 11 updates, rather than being pinned to 8u312 / 11.0.13 (Ubuntu Focal). If an old Forge version fails to start on them, update Forge.
 
 # Performance Images
 
@@ -30,14 +34,14 @@ You can read more about native memory leaks, how to debug them, and how to read 
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
 # TCMalloc
 
 These are new images that I added for the hell of it. TCMalloc has shown in benchmarks that it is better than Jemalloc / Mimalloc / the traditional allocators in some applications... but Minecraft sure as hell isn't one of those things (yes, these images are typically used on minecraft-related applications if you're new to this). If you've got some reliable benchmarks, please feel free to PR in the benchmark results!
 
-- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
 ## Usage
 

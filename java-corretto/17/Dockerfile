@@ -63,14 +63,14 @@ LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolk
 LABEL       org.opencontainers.image.licenses=MIT
 
 # Changes made here:
-# - Added libjemalloc-dev and graphviz, to provide access to the jeprof command (graphviz is a dependency of jeprof)
+# - Added libjemalloc-dev, graphviz and binutils, to provide access to the jeprof command (graphviz and binutils are dependencies of jeprof)
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends ca-certificates curl && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://apt.corretto.aws/corretto.key -o /etc/apt/keyrings/corretto.asc && \
     echo "deb [signed-by=/etc/apt/keyrings/corretto.asc] https://apt.corretto.aws stable main" > /etc/apt/sources.list.d/corretto.list && \
     apt-get update -y && \
-    apt-get install -y --no-install-recommends java-17-amazon-corretto-jdk screen procps libjemalloc-dev graphviz lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
+    apt-get install -y --no-install-recommends java-17-amazon-corretto-jdk screen procps libjemalloc-dev graphviz binutils lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
     useradd -d /home/container -m container && \
     rm -rf /var/lib/apt/lists/*
 

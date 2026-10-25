@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-FROM ghcr.io/graalvm/jdk-community:24-ol9 AS builder
+FROM ghcr.io/graalvm/jdk-community:21-ol9 AS builder
 
 # Install deps for mimalloc building
 RUN microdnf install -y epel-release && \
