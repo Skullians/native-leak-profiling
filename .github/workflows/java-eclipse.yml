@@ -27,20 +27,28 @@ jobs:
                 tag:
                     - 27
                     - perf_27
+                    - tcmalloc_27
                     - 26
                     - perf_26
+                    - tcmalloc_26
                     - 25
                     - perf_25
+                    - tcmalloc_25
                     - 24
                     - perf_24
+                    - tcmalloc_24
                     - 21
                     - perf_21
+                    - tcmalloc_21
                     - 17
                     - perf_17
+                    - tcmalloc_17
                     - 11
                     - perf_11
+                    - tcmalloc_11
                     - 8
                     - perf_8
+                    - tcmalloc_8
 
         steps:
             - name: Checkout

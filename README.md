@@ -41,7 +41,13 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 These are new images that I added for the hell of it. TCMalloc has shown in benchmarks that it is better than Jemalloc / Mimalloc / the traditional allocators in some applications... but Minecraft sure as hell isn't one of those things (yes, these images are typically used on minecraft-related applications if you're new to this). If you've got some reliable benchmarks, please feel free to PR in the benchmark results!
 
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+
+> [!NOTE]
+> TCMalloc is built from the latest gperftools release (Debian's `google-perftools` package was stuck on 2.10), and the entrypoint raises `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` from tcmalloc's default of 32 MiB to 256 MiB.\
+> That 32 MiB budget is shared by every JVM thread (GC, JIT, Netty, plugins), and it is what made TCMalloc look bad: in a synthetic 64 thread malloc/free benchmark (Zulu 27 and Temurin 27, not a real server), default TCMalloc reached 0.12-0.13x glibc's throughput, and 1.4-1.5x with 256 MiB (Jemalloc 1.9x, Mimalloc 0.8x). With memory freed on a different thread than the one that allocated it (like Netty buffers), TCMalloc was the fastest of all: 23x glibc, vs 19x for Mimalloc and 8x for Jemalloc. The trade-off is that TCMalloc keeps freed memory instead of returning it to the OS.\
+> To change the budget, set `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` as a container variable, or prefix the startup command with it: `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES=536870912 java ...`.
 
 ## Usage
 
@@ -72,7 +78,7 @@ Chances are, you'll have to do something similar, which may prove difficult - id
 
 You can also use this docker image for the improved performance of Jemalloc itself. Disable with `-Djemalloc=false` flag - by default, all profiling tools are disabled.
 
-For performance images, use `-Dmimalloc=false`.
+For performance images, use `-Dmimalloc=false`. For TCMalloc images, use `-Dtcmalloc=false`.
 
 ## Why?
 
