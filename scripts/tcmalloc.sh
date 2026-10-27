@@ -42,14 +42,22 @@ java -version
 # replacing the values.
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 TCMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Dtcmalloc=false.*/true/p')
+TCMALLOC_THREAD_CACHE=$(echo "$PARSED" | sed -n 's/.*-Dtcmalloc_thread_cache=\([^ ]*\).*/\1/p')
 
 if [ -z "$TCMALLOC_DISABLED" ]; then
     printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Enabling tcmalloc support"
     export LD_PRELOAD="/usr/local/lib/libtcmalloc_minimal.so"
-    # tcmalloc's default 32 MiB thread cache budget is shared by every JVM thread (GC, JIT, Netty, plugins).
-    # In a 64 thread malloc/free benchmark that made it ~8x slower than glibc; 256 MiB made it ~1.4-1.5x faster.
-    # Set TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES yourself (container variable or startup command prefix) to override.
-    export TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES="${TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES:-268435456}"
+
+    # Optional: tcmalloc's total thread cache budget (default 32 MiB, shared by every thread), in bytes.
+    # Setting TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES in the environment works too, this flag takes precedence.
+    if [ -n "$TCMALLOC_THREAD_CACHE" ]; then
+        if [[ "$TCMALLOC_THREAD_CACHE" =~ ^[0-9]+$ ]]; then
+            printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Setting tcmalloc thread cache to $TCMALLOC_THREAD_CACHE bytes"
+            export TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES="$TCMALLOC_THREAD_CACHE"
+        else
+            printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Ignoring -Dtcmalloc_thread_cache=$TCMALLOC_THREAD_CACHE, it must be a number of bytes"
+        fi
+    fi
 fi
 
 # Display the command we're running in the output, and then execute it with the env

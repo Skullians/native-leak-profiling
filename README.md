@@ -44,10 +44,16 @@ These are new images that I added for the hell of it. TCMalloc has shown in benc
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
-> [!NOTE]
-> TCMalloc is built from the latest gperftools release (Debian's `google-perftools` package was stuck on 2.10), and the entrypoint raises `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` from tcmalloc's default of 32 MiB to 256 MiB.\
-> That 32 MiB budget is shared by every JVM thread (GC, JIT, Netty, plugins), and it is what made TCMalloc look bad: in a synthetic 64 thread malloc/free benchmark (Zulu 27 and Temurin 27, not a real server), default TCMalloc reached 0.12-0.13x glibc's throughput, and 1.4-1.5x with 256 MiB (Jemalloc 1.9x, Mimalloc 0.8x). With memory freed on a different thread than the one that allocated it (like Netty buffers), TCMalloc was the fastest of all: 23x glibc, vs 19x for Mimalloc and 8x for Jemalloc. The trade-off is that TCMalloc keeps freed memory instead of returning it to the OS.\
-> To change the budget, set `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` as a container variable, or prefix the startup command with it: `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES=536870912 java ...`.
+TCMalloc is built from the latest gperftools release (Debian's `google-perftools` package was stuck on 2.10), and runs with its own defaults.
+
+## TCMalloc thread cache size
+
+All of TCMalloc's per-thread caches share one budget, which defaults to 32 MiB. A JVM runs a lot of threads (GC, JIT, Netty, plugins), so if many of them allocate at once, you can raise it:
+
+- `-Dtcmalloc_thread_cache=268435456` (in bytes) in your startup flags, or
+- the `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` environment variable (for example as a container variable). If both are set, the `-D` flag wins.
+
+For reference, in a synthetic 64 thread malloc/free benchmark (Zulu 27 and Temurin 27, not a real server), the default budget gave 0.12-0.13x glibc's throughput, and 256 MiB gave 1.4-1.5x. A bigger budget uses more memory, though, and TCMalloc keeps freed memory instead of returning it to the OS, so expect a much higher RSS than with glibc or Jemalloc either way.
 
 ## Usage
 
