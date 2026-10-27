@@ -43,6 +43,16 @@ These are new images that I added for the hell of it. TCMalloc has shown in benc
 
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
+# Snmalloc
+
+> [!WARNING]
+> These are experimental images.\
+> These use Microsoft Research's [snmalloc](https://github.com/microsoft/snmalloc) allocator, which is designed for memory that is allocated on one thread and freed on another (e.g. Netty buffers moving between the network threads and the main thread). Like Mimalloc, it has no profiling capabilities.
+
+On a Paper 26.3 test server with 29 plugins (Java 27, chunk generation + ~680 entities), snmalloc performed on par with Jemalloc and Mimalloc (startup, chunk generation, MSPT), using ~200-300MiB more RSS than Jemalloc. If you've got benchmarks from a real server, please feel free to PR them in!
+
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_snmalloc_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+
 ## Usage
 
 ### Automatic Jemalloc/Jeprof dumps
@@ -72,7 +82,7 @@ Chances are, you'll have to do something similar, which may prove difficult - id
 
 You can also use this docker image for the improved performance of Jemalloc itself. Disable with `-Djemalloc=false` flag - by default, all profiling tools are disabled.
 
-For performance images, use `-Dmimalloc=false`.
+For performance images, use `-Dmimalloc=false`. For snmalloc images, use `-Dsnmalloc=false`.
 
 ## Why?
 

@@ -27,20 +27,28 @@ jobs:
                 tag:
                     - 27
                     - perf_27
+                    - snmalloc_27
                     - 26
                     - perf_26
+                    - snmalloc_26
                     - 25
                     - perf_25
+                    - snmalloc_25
                     - 24
                     - perf_24
+                    - snmalloc_24
                     - 21
                     - perf_21
+                    - snmalloc_21
                     - 17
                     - perf_17
+                    - snmalloc_17
                     - 11
                     - perf_11
+                    - snmalloc_11
                     - 8
                     - perf_8
+                    - snmalloc_8
 
         steps:
             - name: Checkout
