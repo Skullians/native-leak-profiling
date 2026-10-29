@@ -42,10 +42,20 @@ java -version
 # replacing the values.
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 TCMALLOC_DISABLED=$(echo "$PARSED" | sed -n 's/.*-Dtcmalloc=false.*/true/p')
+TCMALLOC_THREAD_CACHE=$(echo "$PARSED" | sed -n 's/.*-Dtcmalloc_thread_cache=\([^ ]*\).*/\1/p')
 
 if [ -z "$TCMALLOC_DISABLED" ]; then
     printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Enabling tcmalloc support"
-    export LD_PRELOAD="libtcmalloc_minimal.so.4" # should be resolved manually
+    export LD_PRELOAD="/usr/local/lib/libtcmalloc_minimal.so"
+
+    if [ -n "$TCMALLOC_THREAD_CACHE" ]; then
+        if [[ "$TCMALLOC_THREAD_CACHE" =~ ^[0-9]+$ ]]; then
+            printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Setting tcmalloc thread cache to $TCMALLOC_THREAD_CACHE bytes"
+            export TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES="$TCMALLOC_THREAD_CACHE"
+        else
+            printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Ignoring -Dtcmalloc_thread_cache=$TCMALLOC_THREAD_CACHE, it must be a number of bytes"
+        fi
+    fi
 fi
 
 # Display the command we're running in the output, and then execute it with the env

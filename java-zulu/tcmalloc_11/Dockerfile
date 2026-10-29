@@ -20,6 +20,38 @@
 # SOFTWARE.
 #
 
+FROM debian:bookworm-slim AS builder
+
+# Install deps for tcmalloc (gperftools) building
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        which \
+        lsof \
+        curl \
+        ca-certificates \
+        openssl \
+        git \
+        tar \
+        sqlite3 \
+        fontconfig \
+        libfreetype6 \
+        tzdata \
+        iproute2 \
+        libstdc++6 \
+        automake \
+        libtool \
+        autoconf && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
+
+WORKDIR /opt
+
+# We manually compile tcmalloc here, Debian's google-perftools package is years behind upstream gperftools
+COPY scripts/build/tcmalloc.sh /opt/tcmalloc.sh
+RUN chmod +x /opt/tcmalloc.sh && /opt/tcmalloc.sh
+
 # Adapted from https://github.com/pterodactyl/yolks/blob/master/java/11/Dockerfile
 FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:11-latest
 
@@ -29,7 +61,7 @@ LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolk
 LABEL       org.opencontainers.image.licenses=MIT
 
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends screen lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 google-perftools && \
+    apt-get install -y --no-install-recommends screen lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
     useradd -d /home/container -m container && \
     rm -rf /var/lib/apt/lists/*
 
@@ -39,6 +71,8 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
+# Changes: Copy compiled libtcmalloc_minimal.so file to final image.
+COPY --from=builder /usr/local/lib/libtcmalloc_minimal.so* /usr/local/lib/
 COPY scripts/tcmalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

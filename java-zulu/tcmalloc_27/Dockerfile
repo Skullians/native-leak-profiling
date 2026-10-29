@@ -20,6 +20,38 @@
 # SOFTWARE.
 #
 
+FROM debian:bookworm-slim AS builder
+
+# Install deps for tcmalloc (gperftools) building
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        which \
+        lsof \
+        curl \
+        ca-certificates \
+        openssl \
+        git \
+        tar \
+        sqlite3 \
+        fontconfig \
+        libfreetype6 \
+        tzdata \
+        iproute2 \
+        libstdc++6 \
+        automake \
+        libtool \
+        autoconf && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /opt /tmp/jprof /tmp/nmt /tmp/pmap /diagnostic
+
+WORKDIR /opt
+
+# We manually compile tcmalloc here, Debian's google-perftools package is years behind upstream gperftools
+COPY scripts/build/tcmalloc.sh /opt/tcmalloc.sh
+RUN chmod +x /opt/tcmalloc.sh && /opt/tcmalloc.sh
+
 # Azul does not publish an azul/zulu-openjdk-debian:27 image yet, so this mirrors their 26-latest image:
 # Debian bookworm-slim with the JDK installed from Azul's apt repository.
 FROM --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
@@ -37,7 +69,7 @@ RUN apt-get update -y && \
     curl -fsSL https://repos.azul.com/azul-repo.key -o /etc/apt/keyrings/azul.asc && \
     echo "deb [signed-by=/etc/apt/keyrings/azul.asc] https://repos.azul.com/zulu/deb stable main" > /etc/apt/sources.list.d/zulu.list && \
     apt-get update -y && \
-    apt-get install -y --no-install-recommends zulu27-jdk screen lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 google-perftools && \
+    apt-get install -y --no-install-recommends zulu27-jdk screen lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
     useradd -d /home/container -m container && \
     rm -rf /var/lib/apt/lists/*
 
@@ -50,6 +82,8 @@ ENV USER=container \
 
 WORKDIR /home/container/
 
+# Changes: Copy compiled libtcmalloc_minimal.so file to final image.
+COPY --from=builder /usr/local/lib/libtcmalloc_minimal.so* /usr/local/lib/
 COPY scripts/tcmalloc.sh /entrypoint.sh
 
 CMD ["/bin/bash", "/entrypoint.sh"]

@@ -41,7 +41,19 @@ You can read more about native memory leaks, how to debug them, and how to read 
 
 These are new images that I added for the hell of it. TCMalloc has shown in benchmarks that it is better than Jemalloc / Mimalloc / the traditional allocators in some applications... but Minecraft sure as hell isn't one of those things (yes, these images are typically used on minecraft-related applications if you're new to this). If you've got some reliable benchmarks, please feel free to PR in the benchmark results!
 
+- Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_tcmalloc_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
+
+TCMalloc is built from the latest gperftools release (Debian's `google-perftools` package was stuck on 2.10), and runs with its own defaults.
+
+## TCMalloc thread cache size
+
+All of TCMalloc's per-thread caches share one budget, which defaults to 32 MiB. A JVM runs a lot of threads (GC, JIT, Netty, plugins), so if many of them allocate at once, you can raise it:
+
+- `-Dtcmalloc_thread_cache=268435456` (in bytes) in your startup flags, or
+- the `TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES` environment variable (for example as a container variable). If both are set, the `-D` flag wins.
+
+For reference, in a synthetic 64 thread malloc/free benchmark (Zulu 27 and Temurin 27, not a real server), the default budget gave 0.12-0.13x glibc's throughput, and 256 MiB gave 1.4-1.5x. A bigger budget uses more memory, though, and TCMalloc keeps freed memory instead of returning it to the OS, so expect a much higher RSS than with glibc or Jemalloc either way.
 
 ## Usage
 
@@ -72,7 +84,7 @@ Chances are, you'll have to do something similar, which may prove difficult - id
 
 You can also use this docker image for the improved performance of Jemalloc itself. Disable with `-Djemalloc=false` flag - by default, all profiling tools are disabled.
 
-For performance images, use `-Dmimalloc=false`.
+For performance images, use `-Dmimalloc=false`. For TCMalloc images, use `-Dtcmalloc=false`.
 
 ## Why?
 
