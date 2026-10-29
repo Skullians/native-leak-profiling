@@ -48,8 +48,6 @@ if [ -z "$TCMALLOC_DISABLED" ]; then
     printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Enabling tcmalloc support"
     export LD_PRELOAD="/usr/local/lib/libtcmalloc_minimal.so"
 
-    # Optional: tcmalloc's total thread cache budget (default 32 MiB, shared by every thread), in bytes.
-    # Setting TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES in the environment works too, this flag takes precedence.
     if [ -n "$TCMALLOC_THREAD_CACHE" ]; then
         if [[ "$TCMALLOC_THREAD_CACHE" =~ ^[0-9]+$ ]]; then
             printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "Setting tcmalloc thread cache to $TCMALLOC_THREAD_CACHE bytes"
