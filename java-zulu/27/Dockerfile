@@ -52,9 +52,8 @@ WORKDIR /opt
 COPY scripts/build/jemalloc.sh /opt/jemalloc.sh
 RUN chmod +x /opt/jemalloc.sh
 RUN /opt/jemalloc.sh
-# Azul does not publish an azul/zulu-openjdk-debian:27 image yet, so this mirrors their 26-latest image:
-# Debian bookworm-slim with the JDK installed from Azul's apt repository.
-FROM --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
+
+FROM --platform=$TARGETOS/$TARGETARCH azul/zulu-openjdk-debian:27-latest
 
 LABEL       author="Matthew Penner" maintainer="matthew@pterodactyl.io"
 
@@ -64,19 +63,9 @@ LABEL       org.opencontainers.image.licenses=MIT
 # Changes made here:
 # - Added libjemalloc-dev, graphviz and binutils, to provide access to the jeprof command (graphviz and binutils are dependencies of jeprof)
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends ca-certificates curl locales && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen en_US.UTF-8 && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://repos.azul.com/azul-repo.key -o /etc/apt/keyrings/azul.asc && \
-    echo "deb [signed-by=/etc/apt/keyrings/azul.asc] https://repos.azul.com/zulu/deb stable main" > /etc/apt/sources.list.d/zulu.list && \
-    apt-get update -y && \
-    apt-get install -y --no-install-recommends zulu27-jdk screen procps libjemalloc-dev graphviz binutils lsof openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
+    apt-get install -y --no-install-recommends screen procps libjemalloc-dev graphviz binutils lsof curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 numactl libstdc++6 && \
     useradd -d /home/container -m container && \
     rm -rf /var/lib/apt/lists/*
-
-ENV LANG=en_US.UTF-8 \
-    JAVA_HOME=/usr/lib/jvm/zulu27
 
 # jeprof is picky
 RUN test -n "$JAVA_HOME" && mkdir -p /opt/java && ln -sfn "$JAVA_HOME" /opt/java/openjdk
