@@ -2,15 +2,25 @@ name: Build Java
 
 on:
     workflow_dispatch:
+    schedule:
+        - cron: "0 4 * * 1"
     push:
         branches:
             - main
         paths:
             - java/**
             - scripts/**
+            - .github/workflows/java-eclipse.yml
+            - .github/workflows/build.yml
+    pull_request:
+        paths:
+            - java/**
+            - scripts/**
+            - .github/workflows/java-eclipse.yml
+            - .github/workflows/build.yml
 
 permissions:
-    actions: read
+    contents: read
     packages: write
 
 concurrency:
@@ -18,67 +28,7 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    push:
-        name: "java_${{ matrix.tag }}"
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                tag:
-                    - 27
-                    - perf_27
-                    - tcmalloc_27
-                    - 26
-                    - perf_26
-                    - tcmalloc_26
-                    - 25
-                    - perf_25
-                    - tcmalloc_25
-                    - 24
-                    - perf_24
-                    - tcmalloc_24
-                    - 21
-                    - perf_21
-                    - tcmalloc_21
-                    - 17
-                    - perf_17
-                    - tcmalloc_17
-                    - 11
-                    - perf_11
-                    - tcmalloc_11
-                    - 8
-                    - perf_8
-                    - tcmalloc_8
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v7
-
-            - name: QEMU Setup
-              uses: docker/setup-qemu-action@v4
-
-            - name: Setup Buildx
-              uses: docker/setup-buildx-action@v4
-              with:
-                  buildkitd-flags: --debug
-
-            - name: Set image name
-              run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
-
-            - name: Login to registry
-              uses: docker/login-action@v4
-              with:
-                  registry: ghcr.io
-                  username: ${{ github.repository_owner }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Build and Push
-              uses: docker/build-push-action@v7
-              with:
-                  context: .
-                  platforms: linux/amd64,linux/arm64
-                  file: ./java/${{ matrix.tag }}/Dockerfile
-                  push: true
-                  tags: ${{ env.IMAGE }}:java_${{ matrix.tag }}
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+    build:
+        uses: ./.github/workflows/build.yml
+        with:
+            family: java

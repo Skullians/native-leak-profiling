@@ -14,16 +14,19 @@ You can read more about native memory leaks, how to debug them, and how to read 
 > GraalVM 24 was the last release that contains its experimental JIT optimizations, see [Detaching GraalVM from the Java Ecosystem Train](https://blogs.oracle.com/java/detaching-graalvm-from-the-java-ecosystem-train) for more information.
 
 ## Images
-I'd start out with these images - they're based on the Jemalloc memory allocator, which is by far the most mature in regards to stability and how long it has been around for. If you're feeling *spicy*, check out the performance and tcmalloc images.
+
+I'd start out with these images - they're based on the Jemalloc memory allocator, which is by far the most mature in regards to stability and how long it has been around for. If you're feeling _spicy_, check out the performance and tcmalloc images.
 
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
-- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_noble` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 
-> [!NOTE]
-> Eclipse Temurin 27 is not published on Ubuntu Noble, so there is no Noble image for 27 - use the regular Eclipse Adoptium image instead.
+GraalVM and EOL Java vers (24, 26) are excluded, since they no longer get updates.
+
+> [!CAUTION]
+> The GraalVM images are no longer maintained. GraalVM Community stopped updating them, so they will not get fixes for Java vulns... such as [Java4Shell (CVE-2026-114938)](https://www.aikido.dev/blog/java-17-rce-vulnerability-cve-2026-114938). Use Adoptium, Azul, or Corretto images instead.
 
 # Performance Images
 
@@ -32,7 +35,7 @@ I'd start out with these images - they're based on the Jemalloc memory allocator
 > These use Microsoft's [Mimalloc](https://github.com/microsoft/mimalloc) allocator, an alloactor that outperforms Jemalloc, but does not have its profiling capabilities.
 
 - Eclipse Adoptium: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
-- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 26, 25, 24, 21, 17, 11, 8)
+- Eclipse Adoptium (Noble): `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_noble` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - GraalVM: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_graalvm` (Supported: 25, 24, 21, 17, 11).
 - Azul OpenJDK: `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_zulu` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)
 - Amazon Corretto (Debian) `ghcr.io/skullians/native-leak-profiling:java_perf_REPLACEME_corretto` (Supported: 27, 26, 25, 24, 21, 17, 11, 8)

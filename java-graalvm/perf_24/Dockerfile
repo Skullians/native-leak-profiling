@@ -57,5 +57,6 @@ WORKDIR /home/container/
 # Changes: Copy compiled libmimalloc.so file to final image.
 COPY --from=builder /usr/local/lib64/libmimalloc.so* /usr/local/lib/
 COPY scripts/mimalloc.sh /entrypoint.sh
+COPY scripts/graalvm-eol.sh /graalvm-eol.sh
 
-CMD ["/bin/bash", "/entrypoint.sh"]
+CMD ["/bin/bash", "/graalvm-eol.sh"]
