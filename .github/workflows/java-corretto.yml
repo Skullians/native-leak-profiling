@@ -72,5 +72,6 @@ jobs:
                   file: ./java-corretto/${{ matrix.tag }}/Dockerfile
                   push: true
                   tags: ${{ env.IMAGE }}:java_${{ matrix.tag }}_corretto
+                  no-cache: ${{ github.event_name == 'workflow_dispatch' }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
