@@ -33,6 +33,10 @@ export INTERNAL_IP
 # Switch to the container's working directory
 cd /home/container || exit 1
 
+# Fuck you, Java.
+# CVE temp patch until everyone gets off their arse and pushes patches
+export JDK_JAVA_OPTIONS="${JDK_JAVA_OPTIONS:+${JDK_JAVA_OPTIONS} }-XX:-UseBASE64Intrinsics"
+
 # Print Java version
 printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0mjava -version\n"
 java -version
